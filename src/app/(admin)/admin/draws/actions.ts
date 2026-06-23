@@ -89,7 +89,6 @@ export async function simulateDraw(formData: FormData) {
   }
   
   const finalNumbers = Array.from(winningNumbers).sort((a, b) => a - b)
-  const dbDrawType = drawType === 'test-winner-draw' ? 'algorithmic' : drawType
 
   // 2. Fetch all active subscribers
   const { data: subscriptions } = await supabase
@@ -124,7 +123,7 @@ export async function simulateDraw(formData: FormData) {
     draw_date: new Date().toISOString().split('T')[0],
     draw_month: monthName,
     numbers: finalNumbers,
-    draw_type: dbDrawType,
+    draw_type: drawType,
     status: 'simulated',
     total_pool: totalRevenue,
     jackpot_pool: jackpotPool + rolloverJackpot, // add rollover

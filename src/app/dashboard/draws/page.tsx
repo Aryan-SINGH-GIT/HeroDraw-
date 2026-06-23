@@ -86,7 +86,7 @@ export default async function DrawsPage() {
                       {(win.draws as any)?.draw_month ?? 'Unknown'} Draw
                     </div>
                     {win.verification_status === 'pending' ? (
-                      <Link href={`/dashboard/draws/claim/${win.id}`} className="btn-accent text-xs py-2 px-3 block text-center shadow-[0_0_15px_rgba(59,130,246,0.3)]">
+                      <Link href={`/dashboard/winnings/claim/${win.id}`} className="btn-accent text-xs py-2 px-3 block text-center shadow-[0_0_15px_rgba(59,130,246,0.3)]">
                         Claim Prize (Upload Proof)
                       </Link>
                     ) : (
