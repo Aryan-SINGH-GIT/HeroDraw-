@@ -47,6 +47,7 @@ export default async function AdminDrawsPage() {
           <select name="drawType" className="input-field max-w-[150px]" required>
             <option value="random">Random</option>
             <option value="algorithmic">Algorithmic</option>
+            <option value="test-winner-draw">Demo Winner (Guaranteed)</option>
           </select>
           <button type="submit" className="btn-accent">
             Run Simulation

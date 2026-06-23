@@ -6,7 +6,7 @@ import { z } from 'zod'
 
 const simulateSchema = z.object({
   monthName: z.string().min(1, "Month name is required"),
-  drawType: z.enum(['random', 'algorithmic'])
+  drawType: z.enum(['random', 'algorithmic', 'test-winner-draw'])
 })
 
 export async function simulateDraw(formData: FormData) {
@@ -43,6 +43,19 @@ export async function simulateDraw(formData: FormData) {
     while (winningNumbers.size < 5) {
       winningNumbers.add(Math.floor(Math.random() * 45) + 1)
     }
+  } else if (drawType === 'test-winner-draw') {
+    // Demo Mode: Guarantee a Jackpot by pulling a real active user's numbers
+    const { data: activeSubs } = await supabase.from('subscriptions').select('user_id').eq('status', 'active').limit(1)
+    if (activeSubs && activeSubs.length > 0) {
+      const { data: scores } = await supabase.from('scores').select('score').eq('user_id', activeSubs[0].user_id).order('played_date', { ascending: false }).limit(5)
+      if (scores && scores.length >= 3) {
+        scores.forEach(s => winningNumbers.add(s.score))
+      }
+    }
+    // Fill the rest randomly if they don't have enough scores
+    while (winningNumbers.size < 5) {
+      winningNumbers.add(Math.floor(Math.random() * 45) + 1)
+    }
   } else {
     // Algorithmic: Weight by most frequent user scores
     const { data: allScores } = await supabase.from('scores').select('score')
@@ -76,6 +89,7 @@ export async function simulateDraw(formData: FormData) {
   }
   
   const finalNumbers = Array.from(winningNumbers).sort((a, b) => a - b)
+  const dbDrawType = drawType === 'test-winner-draw' ? 'algorithmic' : drawType
 
   // 2. Fetch all active subscribers
   const { data: subscriptions } = await supabase
@@ -110,7 +124,7 @@ export async function simulateDraw(formData: FormData) {
     draw_date: new Date().toISOString().split('T')[0],
     draw_month: monthName,
     numbers: finalNumbers,
-    draw_type: drawType,
+    draw_type: dbDrawType,
     status: 'simulated',
     total_pool: totalRevenue,
     jackpot_pool: jackpotPool + rolloverJackpot, // add rollover
@@ -174,7 +188,7 @@ export async function simulateDraw(formData: FormData) {
     await supabase.from('winners').insert(winnersToInsert)
   }
 
-  revalidatePath('/admin/draws')
+  revalidatePath('/', 'layout')
 }
 
 export async function publishDraw(formData: FormData) {
@@ -228,7 +242,7 @@ export async function publishDraw(formData: FormData) {
     console.error("Failed to send winner emails", e)
   }
 
-  revalidatePath('/admin/draws')
+  revalidatePath('/', 'layout')
   revalidatePath('/admin')
   revalidatePath('/dashboard')
   revalidatePath('/dashboard/winnings')
@@ -251,5 +265,5 @@ export async function discardSimulation(formData: FormData) {
 
   if (error) throw new Error(error.message)
 
-  revalidatePath('/admin/draws')
+  revalidatePath('/', 'layout')
 }
