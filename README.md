@@ -1,36 +1,71 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# HeroDraw 🎯
 
-## Getting Started
+HeroDraw is a modern web platform that merges golf (Stableford scoring), recurring charity donations, and exciting monthly prize draws into a seamless digital experience.
 
-First, run the development server:
+## Features ✨
 
+*   **Stableford Score Tracking:** Users log their 5 most recent Stableford scores.
+*   **Monthly Prize Draws:** The custom algorithmic draw engine uses logged scores to generate a user's unique tickets and match them against drawn numbers.
+*   **Automated Stripe Billing:** Supports transparent Monthly and Yearly subscription tiers, processing payments and webhooks automatically.
+*   **Charity Integration:** A guaranteed minimum percentage of all subscriptions is designated for user-selected charities.
+*   **Admin Dashboard:** Dedicated tooling for administrators to run simulated draws, finalize real draws, approve winning claims, and manage the platform.
+
+## Tech Stack 🛠
+
+*   **Framework:** [Next.js 14](https://nextjs.org/) (App Router)
+*   **Database & Authentication:** [Supabase](https://supabase.com/) (PostgreSQL & Row Level Security)
+*   **Payments:** [Stripe](https://stripe.com/) (Checkout & Webhooks)
+*   **Styling:** [Tailwind CSS](https://tailwindcss.com/)
+*   **Emails:** [Resend](https://resend.com/)
+
+---
+
+## Local Development Setup 🚀
+
+### 1. Clone the repository
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone <your-repo-url>
+cd hero-draw
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. Install dependencies
+```bash
+npm install
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 3. Environment Variables
+Create a `.env.local` file in the root of the project. You will need to populate it with the following keys from your respective service dashboards:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```env
+# Supabase
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+SUPABASE_SERVICE_ROLE_KEY=your_supabase_service_role_key
 
-## Learn More
+# Stripe
+STRIPE_SECRET_KEY=sk_test_...
+STRIPE_WEBHOOK_SECRET=whsec_...
+STRIPE_PRICE_MONTHLY=price_...
+STRIPE_PRICE_YEARLY=price_...
 
-To learn more about Next.js, take a look at the following resources:
+# App URL (Use localhost for local dev)
+NEXT_PUBLIC_APP_URL=http://localhost:3000
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+# Resend (Emails)
+RESEND_API_KEY=re_...
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### 4. Run the Development Server
+```bash
+npm run dev
+```
+Open [http://localhost:3000](http://localhost:3000) in your browser to see the application.
 
-## Deploy on Vercel
+## Deployment 🌐
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+This project is optimized for deployment on **Vercel**. 
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. Import the repository into Vercel.
+2. Copy all variables from `.env.local` into the Vercel Environment Variables settings.
+3. Deploy!
+4. *Crucial:* Once deployed, remember to set up a new Stripe Webhook pointing to `https://your-domain.vercel.app/api/webhooks/stripe` and update the `STRIPE_WEBHOOK_SECRET` in Vercel with the new live signing secret.
