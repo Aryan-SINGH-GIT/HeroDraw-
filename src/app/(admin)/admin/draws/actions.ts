@@ -228,15 +228,18 @@ export async function publishDraw(formData: FormData) {
       .select('user_id, prize_amount, draws(draw_month)')
       .eq('draw_id', drawId)
 
-    if (winners && winners.length > 0) {
-      const { sendWinnerNotificationEmail } = await import('@/lib/email')
-      for (const w of winners) {
-        const { data: profile } = await supabase.from('profiles').select('email').eq('id', w.user_id).single()
-        if (profile?.email) {
-          await sendWinnerNotificationEmail(profile.email, w.prize_amount, (w.draws as any).draw_month)
+      if (winners && winners.length > 0) {
+        const { sendWinnerNotificationEmail } = await import('@/lib/email')
+        const { adminAuthClient } = await import('@/lib/supabase/admin')
+        for (const w of winners) {
+          const { data: { user: authUser }, error: userError } = await adminAuthClient.auth.admin.getUserById(w.user_id)
+          if (authUser?.email) {
+            await sendWinnerNotificationEmail(authUser.email, w.prize_amount, (w.draws as any).draw_month)
+          } else {
+            console.error("Could not find email for user", w.user_id, userError)
+          }
         }
       }
-    }
   } catch (e) {
     console.error("Failed to send winner emails", e)
   }
