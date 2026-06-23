@@ -123,7 +123,7 @@ export async function simulateDraw(formData: FormData) {
     draw_date: new Date().toISOString().split('T')[0],
     draw_month: monthName,
     numbers: finalNumbers,
-    draw_type: drawType,
+    draw_type: drawType === 'test-winner-draw' ? 'algorithmic' : drawType,
     status: 'simulated',
     total_pool: totalRevenue,
     jackpot_pool: jackpotPool + rolloverJackpot, // add rollover
