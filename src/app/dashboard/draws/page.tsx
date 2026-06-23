@@ -115,7 +115,7 @@ export default async function DrawsPage() {
                   <div className="flex justify-between items-center mb-6 border-b border-white/10 pb-5">
                     <div>
                       <h3 className="text-xl font-bold text-white">{draw.draw_month} Draw</h3>
-                      <p className="text-xs font-medium text-gray-400 mt-1">{new Date(draw.draw_date).toLocaleDateString()}</p>
+                      <p className="text-xs font-medium text-gray-400 mt-1">{new Date(draw.draw_date).toLocaleDateString('en-IN', { timeZone: 'Asia/Kolkata', day: '2-digit', month: 'short', year: 'numeric' })}</p>
                     </div>
                     <div className="text-right">
                       <div className="text-xs font-semibold tracking-wide text-gray-400 uppercase">Total Pool</div>

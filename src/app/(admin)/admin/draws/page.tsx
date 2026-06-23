@@ -122,7 +122,7 @@ export default async function AdminDrawsPage() {
                   {draw.draw_month}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
-                  {new Date(draw.draw_date).toLocaleDateString()}
+                  {new Date(draw.draw_date).toLocaleDateString('en-IN', { timeZone: 'Asia/Kolkata', day: '2-digit', month: 'short', year: 'numeric' })}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
                   <span className="font-mono bg-white/5 px-2 py-1 rounded tracking-widest text-white border border-white/10">
