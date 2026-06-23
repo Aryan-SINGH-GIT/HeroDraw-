@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { adminAuthClient } from '@/lib/supabase/admin'
 import { processClaim } from './actions'
+import { SubmitButton } from '@/components/SubmitButton'
 
 export const dynamic = 'force-dynamic'
 
@@ -92,12 +93,12 @@ export default async function AdminWinningsPage() {
 
                   <form action={processClaim} className="flex gap-3 pt-2">
                     <input type="hidden" name="winId" value={claim.id} />
-                    <button type="submit" name="action" value="approve" className="flex-1 bg-green-600/20 text-green-400 border border-green-500/30 px-4 py-2 rounded-lg font-medium hover:bg-green-600/30 transition-colors text-center">
+                    <SubmitButton name="action" value="approve" className="flex-1 bg-green-600/20 text-green-400 border border-green-500/30 px-4 py-2 rounded-lg font-medium hover:bg-green-600/30 transition-colors text-center" loadingText="Approving...">
                       Approve & Mark Paid
-                    </button>
-                    <button type="submit" name="action" value="reject" className="flex-1 bg-red-500/20 text-red-400 border border-red-500/30 px-4 py-2 rounded-lg font-medium hover:bg-red-500/30 transition-colors text-center">
+                    </SubmitButton>
+                    <SubmitButton name="action" value="reject" className="flex-1 bg-red-500/20 text-red-400 border border-red-500/30 px-4 py-2 rounded-lg font-medium hover:bg-red-500/30 transition-colors text-center" loadingText="Rejecting...">
                       Reject Proof
-                    </button>
+                    </SubmitButton>
                   </form>
                 </div>
               </div>

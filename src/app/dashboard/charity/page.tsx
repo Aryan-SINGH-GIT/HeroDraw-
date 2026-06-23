@@ -1,6 +1,8 @@
 import { createClient } from '@/lib/supabase/server';
 import { revalidatePath } from 'next/cache';
 import type { Charity } from '@/types';
+import { CharitySlider } from './CharitySlider';
+import { SubmitButton } from '@/components/SubmitButton';
 
 export default async function CharityPage() {
   const supabase = await createClient();
@@ -91,19 +93,7 @@ export default async function CharityPage() {
             </div>
           </div>
 
-          <div className="flex items-center gap-6 mt-6 pt-4 border-t border-white/10">
-            <input
-              type="range"
-              name="percentage"
-              min="10"
-              max="100"
-              defaultValue={currentPercentage}
-              className="flex-1 accent-accent h-2 bg-white/10 rounded-lg appearance-none cursor-pointer"
-            />
-            <span className="text-2xl font-bold tabular-nums text-white w-16 text-right">
-              {currentPercentage}%
-            </span>
-          </div>
+          <CharitySlider initialPercentage={currentPercentage} />
         </div>
 
         {/* Charity Selection Grid */}
@@ -177,12 +167,9 @@ export default async function CharityPage() {
 
         {/* Save Button */}
         <div className="flex justify-end pt-4">
-          <button
-            type="submit"
-            className="btn-primary"
-          >
+          <SubmitButton className="btn-primary" loadingText="Saving...">
             Save Charity Preferences
-          </button>
+          </SubmitButton>
         </div>
       </form>
 

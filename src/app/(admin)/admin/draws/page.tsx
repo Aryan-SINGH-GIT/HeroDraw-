@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import { simulateDraw, publishDraw, discardSimulation } from './actions'
+import { SubmitButton } from '@/components/SubmitButton'
 
 export default async function AdminDrawsPage() {
   const supabase = await createClient()
@@ -49,9 +50,9 @@ export default async function AdminDrawsPage() {
             <option value="algorithmic">Algorithmic</option>
             <option value="test-winner-draw">Demo Winner (Guaranteed)</option>
           </select>
-          <button type="submit" className="btn-accent">
+          <SubmitButton className="btn-accent" loadingText="Running...">
             Run Simulation
-          </button>
+          </SubmitButton>
         </form>
       </div>
 
@@ -89,15 +90,15 @@ export default async function AdminDrawsPage() {
           <div className="flex gap-4">
             <form action={publishDraw}>
               <input type="hidden" name="drawId" value={simulation.id} />
-              <button type="submit" className="bg-green-600/20 text-green-400 border border-green-500/30 px-6 py-2 rounded-lg font-medium hover:bg-green-600/30 transition-colors">
+              <SubmitButton className="bg-green-600/20 text-green-400 border border-green-500/30 px-6 py-2 rounded-lg font-medium hover:bg-green-600/30 transition-colors" loadingText="Publishing...">
                 Approve & Publish Draw
-              </button>
+              </SubmitButton>
             </form>
             <form action={discardSimulation}>
               <input type="hidden" name="drawId" value={simulation.id} />
-              <button type="submit" className="bg-surface/50 border border-white/10 text-gray-300 px-6 py-2 rounded-lg font-medium hover:bg-white/5 hover:text-white transition-colors">
+              <SubmitButton className="bg-surface/50 border border-white/10 text-gray-300 px-6 py-2 rounded-lg font-medium hover:bg-white/5 hover:text-white transition-colors" loadingText="Discarding...">
                 Discard & Try Again
-              </button>
+              </SubmitButton>
             </form>
           </div>
         </div>

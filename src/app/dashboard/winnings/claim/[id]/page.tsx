@@ -1,3 +1,4 @@
+import { SubmitButton } from '@/components/SubmitButton'
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import { submitClaim } from '../actions'
@@ -84,12 +85,12 @@ export default async function ClaimPrizePage(props: { params: Promise<{ id: stri
           </div>
         </div>
 
-        <button 
-          type="submit" 
+        <SubmitButton 
           className="w-full btn-primary"
+          loadingText="Uploading & Submitting..."
         >
           Submit Claim for Verification
-        </button>
+        </SubmitButton>
       </form>
     </div>
   )
