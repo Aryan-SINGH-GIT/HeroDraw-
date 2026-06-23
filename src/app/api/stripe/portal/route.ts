@@ -21,10 +21,12 @@ export async function POST(req: Request) {
       return new NextResponse('No active customer found', { status: 400 })
     }
 
+    const origin = req.headers.get('origin') || process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
+
     // Create customer portal session
     const stripeSession = await stripe.billingPortal.sessions.create({
       customer: subscription.stripe_customer_id,
-      return_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/settings`,
+      return_url: `${origin}/dashboard/settings`,
     })
 
     return NextResponse.redirect(stripeSession.url, { status: 303 })

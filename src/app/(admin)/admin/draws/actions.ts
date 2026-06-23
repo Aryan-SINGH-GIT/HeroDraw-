@@ -209,6 +209,25 @@ export async function publishDraw(formData: FormData) {
 
   if (error) throw new Error(error.message)
 
+  try {
+    const { data: winners } = await supabase
+      .from('winners')
+      .select('user_id, prize_amount, draws(draw_month)')
+      .eq('draw_id', drawId)
+
+    if (winners && winners.length > 0) {
+      const { sendWinnerNotificationEmail } = await import('@/lib/email')
+      for (const w of winners) {
+        const { data: profile } = await supabase.from('profiles').select('email').eq('id', w.user_id).single()
+        if (profile?.email) {
+          await sendWinnerNotificationEmail(profile.email, w.prize_amount, (w.draws as any).draw_month)
+        }
+      }
+    }
+  } catch (e) {
+    console.error("Failed to send winner emails", e)
+  }
+
   revalidatePath('/admin/draws')
   revalidatePath('/admin')
   revalidatePath('/dashboard')

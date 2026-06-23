@@ -62,6 +62,16 @@ export async function POST(req: Request) {
               plan_type: session.metadata?.plan_type || 'monthly'
             })
           if (error) console.error('Insert error:', error)
+            
+          try {
+            const { data: profile } = await supabase.from('profiles').select('email').eq('id', userId).single()
+            if (profile?.email) {
+              const { sendSubscriptionConfirmedEmail } = await import('@/lib/email')
+              await sendSubscriptionConfirmedEmail(profile.email)
+            }
+          } catch (e) {
+            console.error('Failed to send subscription email:', e)
+          }
         }
         break
       }
