@@ -1,5 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { stripe } from '@/lib/stripe'
+import { signOut } from '@/app/(auth)/actions'
+import { SubmitButton } from '@/components/SubmitButton'
 
 export default async function SettingsPage() {
   const supabase = await createClient()
@@ -84,8 +86,20 @@ export default async function SettingsPage() {
           Manage your chosen charity and adjust your contribution rate.
         </p>
         <a href="/dashboard/charity" className="btn-primary inline-block">
-          Manage Charity Preferences →
+          Manage Charity Preferences ↗
         </a>
+      </div>
+
+      <div className="card border-l-4 border-l-red-500/50">
+        <h2 className="text-sm font-semibold tracking-wide text-gray-400 uppercase mb-4">Account Actions</h2>
+        <p className="text-sm font-medium text-gray-400 mb-6">
+          Sign out of your Hero Draw account.
+        </p>
+        <form action={signOut}>
+          <SubmitButton className="bg-red-500/10 text-red-400 border border-red-500/20 px-6 py-2 rounded-lg font-medium hover:bg-red-500/20 transition-colors" loadingText="Signing out...">
+            Sign Out
+          </SubmitButton>
+        </form>
       </div>
     </div>
   )
