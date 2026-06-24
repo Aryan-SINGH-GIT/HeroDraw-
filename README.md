@@ -54,8 +54,8 @@ The PostgreSQL database is highly relational. Below is the core schema structure
 * **`charities`**: Stores charity metadata (`name`, `description`, `website_url`, `is_active`).
 * **`charity_contributions`**: Logs every time a winning user contributes their cut to a charity.
 
-*(Insert your Schema Image below)*
-![Database Schema Diagram](./public/schema.png)
+
+<img width="2270" height="1270" alt="supabase-schema-pqpnbaswmimsxpkqrwle" src="https://github.com/user-attachments/assets/5734c3fd-8fea-450f-b09b-811e92ce6b0b" />
 
 ---
 
